@@ -1,7 +1,7 @@
 # Author: john jensen (john@z2live.com)
 
 import sys
-import getopt
+import argparse
 
 import codecs
 import unicodedata
@@ -136,10 +136,12 @@ def main(argv=None):
         argv = sys.argv
     try:
         try:
-            opts, args = getopt.getopt(argv[1:], "h", ["help"])
-
-            return markdown_to_google_sites("mdtest.md", False)
-        except getopt.error, msg:
+            parser = argparse.ArgumentParser(description='Convert markdown file to Google Sites-friendly HTML.')
+            parser.add_argument('input_file', help='The input file to read markdown from')
+            parser.add_argument('output_file', help='The output file to store modified markdown in')
+            args = parser.parse_args()
+            return markdown_to_google_sites(args.input_file, output_filename=args.output_file)
+        except parser.error, msg:
              raise Usage(msg)
         # more code, unchanged
     except Usage, err:
